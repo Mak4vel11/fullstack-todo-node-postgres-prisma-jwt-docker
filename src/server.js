@@ -4,6 +4,9 @@ import express from 'express'
 //enable serve.js file html in this case  and send the back as res 
 import { fileURLToPath } from 'url'
 
+import authRoutes from './routes/authRoutes.js'
+import todoRoutes  from './routes/todoRoutes.js'
+
 const app = express()
 const PORT = process.env.PORT || 5000
 
@@ -27,6 +30,11 @@ app.get('/', (req, res) => {
     //enable to locate file and folder 
  res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
+
+//routes
+app.use('/auth', authRoutes)
+app.use('/todos', todoRoutes)
+
 
 //gjithmone kjo duhet ne fund 
 app.listen(PORT, () => {
