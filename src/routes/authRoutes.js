@@ -48,7 +48,7 @@ router.post('/register', (req, res) => {
             //are associate a special token or key with that network request
             //its like a apikey
             const token = jwt.sign({id: result.lastInsertRowid}, process.env.JWT_SECRET, 
-                {expiresIn: '24'})
+                {expiresIn: '24h'})
             res.json({token})
 
     } catch(err) {
@@ -66,6 +66,31 @@ router.post('/login', (req, res ) => {
  //but we get it ad see its encrypted which means that we cannot compare
  //it to the one the uer just user trying to login , so what we can compare
  //get the encrypted pw and compare it to the pw in the database  
+ 
+ const {username, password} = req.body
+
+ try {//sequal comment to read user database 
+    const getUser = db.prepare('SELECT * FROM users WHERE username = ?')
+    //inject username and read everything from the user where the username match
+    const user = getUser.get(username)
+
+    //if they dont have an acc and they want to login 
+    if(!user) {return res.status(404).send({ message: "USER NOT FOUND"})}
+//hash pw and compered to hash pw 
+//will return a boolean 
+//then pas dont match 
+const passwordIsValid = bcrypt.compareSync(passowrd, user.passowrd)
+if(!passwordIsValid) {return res.status(401).send({message:"invlid passowrd"})}
+console.log(user)
+//than we have a succefull auth
+    const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, 
+    {expiresIn: '24h'})
+    res.json({token})
+} catch (err){
+    console.error(err.message)
+    res.send(503)
+}
+
 })
 
 export default router
