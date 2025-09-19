@@ -25,3 +25,36 @@ Content-Type: application/json
     "username": "gilgamesh@gmail.com",
     "password": "123123123"
 }
+
+
+### fetch all todos GET / TODOS (protected)
+GET http://localhost:5000/todos
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU4Mjk3MTI1LCJleHAiOjE3NTgzODM1MjV9.9dH6OG64oVWThu2KcFUtjhh2vASMFSIAID733iHhdnc
+
+
+### Creates a new todo POST/ TODOS (protected)
+POST http://localhost:5000/todos
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU4Mjk3MTI1LCJleHAiOjE3NTgzODM1MjV9.9dH6OG64oVWThu2KcFUtjhh2vASMFSIAID733iHhdnc
+    Content-Type: application/json
+
+{
+    "task": "Finish coding project"
+}
+
+### Update a todo PUT / TODOS:ID (protected)
+//figure out what id is associate wish 
+PUT http://localhost:5000/todos/2?task=4
+Authorization:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU4Mjk3MTI1LCJleHAiOjE3NTgzODM1MjV9.9dH6OG64oVWThu2KcFUtjhh2vASMFSIAID733iHhdnc
+Content-Type: application/json
+
+{
+    "completed": 1
+}
+
+### Delete a TODO / Delete / TODOS:ID (protected)
+//pernamently delete 
+//soft delete is to take the deletes back they are not 
+//removed from the databse 
+//this delete is not recommendet
+DELETE http://localhost:5000
+Authorization: :  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzU4Mjk2NjIyLCJleHAiOjE3NTgzODMwMjJ9.d6mlYrSXKJotOQUAj8UwTDOE2rePPYRUaM1B17nJkBg
