@@ -1,5 +1,5 @@
 {
-  "name": "chpater_3",
+  "name": "chpater_4",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -10,11 +10,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "A full stack todo app that use nodeJs backend a SQLite database and JWT auth",
+  "description": "A dockerized full stack todo application that uses a nodeJs backend , a PostgreSQL database a Prisma ORM, and JWT authentication",
   "dependencies": {
+    "@prisma/client": "^6.16.2",
     "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3",
+    "prisma": "^6.16.2",
     "sqlite3": "^5.1.7"
   }
 }

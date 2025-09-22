@@ -16,3 +16,5 @@ Thumbs.db
 # Build artifacts (nëse krijon build)
 dist/
 build/
+
+/src/generated/prisma
