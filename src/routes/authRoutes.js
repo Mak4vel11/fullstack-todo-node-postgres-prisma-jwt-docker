@@ -1,10 +1,10 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-
 //auth key for autentifiaciton
 import jwt from "jsonwebtoken";
 //import database
 import db from "../db.js";
+import prisma from "./prismaClient.js";
 
 //how to configure endpoint or routes when they are not defined
 //in original file
