@@ -12,7 +12,7 @@ import db from "../db.js";
 const router = express.Router();
 
 //register new user endpoind /auth/register
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   //encrpyt the password
@@ -24,30 +24,31 @@ router.post("/register", (req, res) => {
   //prepare method we run a sql qurey
   // we can inject value sql qurey
   try {
-    //we prepare a sql qurety were to intert data into a table that exist
-    //within the database then we specify the table and then we spicfy
-    // the exact colums to whitch we want to add info
-    //we spicfy the values and we leave them blanks
-    //we add a new user
-    const insertUser = db.prepare(`INSERT INTO users (username, password)
-        VALUES (?, ?)`);
-    const result = insertUser.run(username, hashedPassword);
-
-    //give them a entry to get how the app works
+    //like this we have created a user , using js syntax 
+    const user = await prisma.user.create({
+      data: {
+        username,
+        password: hashedPassword
+      }
+    })
 
     //now that we have a user i want to add their first todo for them
     //we assign a default to do and we create a special token
     const defaultTodo = `Hello :) Add your first todo `;
-    const insertTodo = db.prepare(`INSERT INTO todos (user_id, task)
-            VALUES (?, ?)`);
-    insertTodo.run(result.lastInsertRowid, defaultTodo);
+    await prisma.todo.create({
+      data:{
+        task: defaultTodo,
+        userId: user.id 
+      }
+    })
+  
 
     //create a token
     //token is importat cuz once we loggin they create todo they
     //are associate a special token or key with that network request
     //its like a apikey
     const token = jwt.sign(
-      { id: result.lastInsertRowid },
+      { id: user.id },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
@@ -61,7 +62,7 @@ router.post("/register", (req, res) => {
   }
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   //we get their email , and we look up the password associated with
   //that email in the database
   //but we get it ad see its encrypted which means that we cannot compare
@@ -71,10 +72,12 @@ router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   try {
-    //sequal comment to read user database
-    const getUser = db.prepare("SELECT * FROM users WHERE username = ?");
-    //inject username and read everything from the user where the username match
-    const user = getUser.get(username);
+    //find our unique user 
+    const user = await prisma.user.findUnique({
+      where: {
+        username: username 
+      }
+    })
 
     //if they dont have an acc and they want to login
     if (!user) {
